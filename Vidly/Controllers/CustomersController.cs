@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
-using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -24,13 +24,9 @@ namespace Vidly.Controllers
 
         public ViewResult Index()
         {
-            var customers = _context.Customers.ToList();
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
 
-            var viewModel = new CustomersViewModel
-            {
-                Customers = customers
-            };
-            return View(viewModel);
+            return View(customers);
         }
 
         [Route("Customers/Details/{id}")]
